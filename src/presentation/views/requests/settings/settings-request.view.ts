@@ -3,7 +3,7 @@ import { IsNotEmpty, Max, Min } from 'class-validator';
 import { Transform, TransformFnParams } from 'class-transformer';
 import {SettingsRequestDto} from "domain/dto/requests/settings";
 
-export class SettingsRequest extends SettingsRequestDto {
+export class SettingsRequestView extends SettingsRequestDto {
   @ApiProperty()
   @IsNotEmpty()
   @Min(0)

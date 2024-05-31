@@ -1,1 +1,1 @@
-export * from './settings.request';
+export * from './settings-request.view';

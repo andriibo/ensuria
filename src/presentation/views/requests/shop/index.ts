@@ -1,1 +1,1 @@
-export * from './create-shop.request';
+export * from './create-shop-request.view';

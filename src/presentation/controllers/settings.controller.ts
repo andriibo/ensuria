@@ -7,7 +7,7 @@ import {
     ApiUnprocessableEntityResponse
 } from "@nestjs/swagger";
 import {SettingsUseCasesFactory} from "infrastructure/modules/settings/factories";
-import {SettingsRequest} from "presentation/views/requests/settings";
+import {SettingsRequestView} from "presentation/views/requests/settings";
 
 @Controller()
 @ApiTags('Settings')
@@ -22,7 +22,7 @@ export class SettingsController {
     @ApiConsumes('application/json', 'application/x-www-form-urlencoded')
     @ApiUnprocessableEntityResponse({ description: 'Unprocessable entity' })
     @ApiBadRequestResponse({ description: 'Bad request' })
-    async save(@Body() request: SettingsRequest): Promise<void> {
+    async save(@Body() request: SettingsRequestView): Promise<void> {
         const useCase =
             this.settingsUseCasesFactory.createSaveSettingsUseCase();
 
