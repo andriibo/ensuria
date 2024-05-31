@@ -32,6 +32,30 @@ $ npm run start:prod
 $ npm run test:e2e
 ```
 
+## Migration
+
+```bash
+# commands listed below are specified in the package.json
+# create migration
+$ npm run migration:create --name=Migration
+
+# generate migration
+$ npm run migration:generate --name=Migration
+
+# run migrations
+$ npm run migration:up
+
+# revert migration
+$ npm run migration:down
+```
+
+## API Documentation
+
+```bash
+{SCHEME}://{HOST}:{PORT}/api
+{SCHEME}://{HOST}:{PORT}/api-json
+```
+
 ## pgAdmin
 
 ```bash

@@ -1,10 +1,14 @@
 import { Module } from '@nestjs/common';
-import { AppController } from 'presentation/app.controller';
-import { AppService } from 'infrastructure/app.service';
+import {TypeOrmModule} from "@nestjs/typeorm";
+import {CqrsModule} from "@nestjs/cqrs";
+import {SettingsModule} from "infrastructure/modules/settings/settings.module";
+import {dbConnectionOptions} from "config/db.config";
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    TypeOrmModule.forRoot({ ...dbConnectionOptions, autoLoadEntities: true }),
+    CqrsModule.forRoot(),
+    SettingsModule,
+  ],
 })
 export class AppModule {}
