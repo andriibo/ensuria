@@ -3,8 +3,7 @@ import {
     CallHandler,
     ExecutionContext,
     NestInterceptor,
-    NotFoundException,
-    UnprocessableEntityException,
+    UnprocessableEntityException, BadRequestException,
 } from '@nestjs/common';
 import {BadRequestError} from 'application/errors';
 import {catchError, Observable, throwError} from 'rxjs';
@@ -14,18 +13,18 @@ import {TypeORMError} from 'typeorm';
 export class ErrorsInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         return next.handle().pipe(
-            catchError((err) => {
-                if (err instanceof BadRequestError) {
-                    return throwError(() => new NotFoundException(err.message));
+            catchError((error) => {
+                if (error instanceof BadRequestError) {
+                    return throwError(() => new BadRequestException(error.message));
                 }
 
-                if (err instanceof TypeORMError) {
+                if (error instanceof TypeORMError) {
                     return throwError(
-                        () => new UnprocessableEntityException(err.message),
+                        () => new UnprocessableEntityException(error.message),
                     );
                 }
 
-                return throwError(() => err);
+                return throwError(() => error);
             }),
         );
     }
