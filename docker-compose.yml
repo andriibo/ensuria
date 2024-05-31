@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  ensuria-api:
+    build:
+      context: .
+      target: development
+    restart: unless-stopped
+    tty: true
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:debug
+    ports:
+      - ${SERVER_PORT}:3000
+    networks:
+      - ensuria-network
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:16.2
+    restart: unless-stopped
+    tty: true
+    networks:
+      - ensuria-network
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      PG_DATA: /var/lib/postgresql/data
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  pg-admin:
+    image: dpage/pgadmin4
+    restart: always
+    logging:
+      driver: none
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - ensuria-network
+
+networks:
+  ensuria-network:
+    name: ensuria-network
+volumes:
+  pgdata:
+  pgadmin-data:
