@@ -7,7 +7,7 @@ import {
     ApiUnprocessableEntityResponse
 } from "@nestjs/swagger";
 import {SettingsUseCasesFactory} from "infrastructure/modules/settings/factories";
-import {SettingsRequest} from "presentation/views/requests";
+import {SettingsRequest} from "presentation/views/requests/settings";
 
 @Controller()
 @ApiTags('Settings')
