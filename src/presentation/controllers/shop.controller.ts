@@ -18,7 +18,7 @@ export class ShopController {
         private readonly shopUseCasesFactory: ShopUseCasesFactory
     ) {}
 
-    @Post('')
+    @Post()
     @HttpCode(HttpStatus.OK)
     @ApiOkResponse({ type: CreateShopResponseView })
     @ApiConsumes('application/json', 'application/x-www-form-urlencoded')
@@ -26,8 +26,8 @@ export class ShopController {
     @ApiBadRequestResponse({ description: 'Bad request' })
     async create(@Body() request: CreateShopRequestView): Promise<CreateShopResponseDto> {
         const useCase =
-            this.shopUseCasesFactory.createSaveShopUseCase();
+            this.shopUseCasesFactory.createAddShopUseCase();
 
-        return await useCase.save(request);
+        return await useCase.create(request);
     }
 }

@@ -3,9 +3,9 @@ import {
     CallHandler,
     ExecutionContext,
     NestInterceptor,
-    UnprocessableEntityException, BadRequestException,
+    UnprocessableEntityException, BadRequestException, NotFoundException,
 } from '@nestjs/common';
-import {BadRequestError} from 'application/errors';
+import {BadRequestError, NotFoundError} from 'application/errors';
 import {catchError, Observable, throwError} from 'rxjs';
 import {TypeORMError} from 'typeorm';
 
@@ -16,6 +16,10 @@ export class ErrorsInterceptor implements NestInterceptor {
             catchError((error) => {
                 if (error instanceof BadRequestError) {
                     return throwError(() => new BadRequestException(error.message));
+                }
+
+                if (error instanceof NotFoundError) {
+                    return throwError(() => new NotFoundException(error.message));
                 }
 
                 if (error instanceof TypeORMError) {

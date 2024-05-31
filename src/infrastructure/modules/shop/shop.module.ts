@@ -11,6 +11,7 @@ import {ShopService} from "infrastructure/modules/shop/services";
 
 @Module({
     imports: [TypeOrmModule.forFeature([ShopModel])],
+    exports: [IShopRepository],
     controllers: [ShopController],
     providers: [
         ShopUseCasesFactory,

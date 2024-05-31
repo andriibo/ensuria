@@ -6,7 +6,7 @@ import {CreateShopUseCase} from "application/modules/shop/use-cases";
 export class ShopUseCasesFactory {
   constructor(private readonly commandBus: CommandBus) {}
 
-  createSaveShopUseCase(): CreateShopUseCase {
+  createAddShopUseCase(): CreateShopUseCase {
     return new CreateShopUseCase(this.commandBus);
   }
 }

@@ -12,6 +12,10 @@ export class ShopRepository implements IShopRepository {
     private readonly repository: Repository<ShopModel>,
   ) {}
 
+  async findById(id: string): Promise<ShopEntity | null> {
+    return await this.repository.findOneBy({id});
+  }
+
   async findByName(name: string): Promise<ShopEntity | null> {
     return await this.repository.findOneBy({name});
   }

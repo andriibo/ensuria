@@ -6,7 +6,7 @@ import {CreateShopResponseDto} from "domain/dto/responses/shop";
 export class CreateShopUseCase {
   constructor(private readonly commandBus: ICommandBus) {}
 
-  async save(dto: CreateShopRequestDto): Promise<CreateShopResponseDto> {
+  async create(dto: CreateShopRequestDto): Promise<CreateShopResponseDto> {
     const shop = await this.commandBus.execute(new CreateShopCommand(dto.name, dto.commissionC));
 
     return new CreateShopResponseDto(shop.id);

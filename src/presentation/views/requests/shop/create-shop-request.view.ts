@@ -7,6 +7,7 @@ export class CreateShopRequestView extends CreateShopRequestDto {
   @ApiProperty()
   @IsNotEmpty()
   @MaxLength(100)
+  @Transform(({ value }: TransformFnParams) => value.trim())
   name: string;
 
   @ApiProperty()

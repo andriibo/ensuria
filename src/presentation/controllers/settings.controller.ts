@@ -9,14 +9,14 @@ import {
 import {SettingsUseCasesFactory} from "infrastructure/modules/settings/factories";
 import {SettingsRequestView} from "presentation/views/requests/settings";
 
-@Controller()
+@Controller('settings')
 @ApiTags('Settings')
 export class SettingsController {
     constructor(
         private readonly settingsUseCasesFactory: SettingsUseCasesFactory
     ) {}
 
-    @Put('settings')
+    @Put()
     @HttpCode(HttpStatus.NO_CONTENT)
     @ApiNoContentResponse({ description: 'No content' })
     @ApiConsumes('application/json', 'application/x-www-form-urlencoded')

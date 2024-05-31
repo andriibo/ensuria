@@ -6,6 +6,7 @@ import {dbConnectionOptions} from "config/db.config";
 import {APP_INTERCEPTOR} from "@nestjs/core";
 import {ErrorsInterceptor} from "presentation/interceptors";
 import {ShopModule} from "infrastructure/modules/shop/shop.module";
+import {PaymentModule} from "infrastructure/modules/payment/payment.module";
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import {ShopModule} from "infrastructure/modules/shop/shop.module";
     CqrsModule.forRoot(),
     SettingsModule,
     ShopModule,
+    PaymentModule,
   ],
   providers: [
     {
