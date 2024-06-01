@@ -4,7 +4,8 @@ import {PaymentEntity} from "domain/entities";
 import {CreatePaymentCommand} from "application/modules/payment/commands";
 import {ICreatePaymentService} from "application/modules/payment/services";
 import {IShopRepository} from "domain/repositories";
-import {NotFoundError} from "application/errors";
+import {BadRequestError, NotFoundError} from "application/errors";
+import {MinAmount} from "domain/const";
 
 @CommandHandler(CreatePaymentCommand)
 export class CreatePaymentHandler
@@ -21,6 +22,10 @@ export class CreatePaymentHandler
     const shop = await this.shopRepository.findById(shopId);
     if (!shop) {
       throw new NotFoundError('Shop not found.');
+    }
+
+    if (amount < MinAmount) {
+      throw new BadRequestError(`Amount must be more than ${MinAmount}.`);
     }
 
     return await this.createPaymentService.create(shopId, amount);
