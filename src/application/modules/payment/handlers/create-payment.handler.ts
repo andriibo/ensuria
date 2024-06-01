@@ -12,11 +12,11 @@ export class CreatePaymentHandler
 {
   constructor(
       @Inject(IShopRepository) private readonly shopRepository: IShopRepository,
-      @Inject(IPaymentService) private readonly paymentService: IPaymentService
+      @Inject(IPaymentService) private readonly paymentService: IPaymentService,
   ) {}
 
   async execute(command: CreatePaymentCommand): Promise<PaymentEntity> {
-    const { shopId, amount} = command;
+    const { shopId, amount } = command;
 
     const shop = await this.shopRepository.findById(shopId);
     if (!shop) {

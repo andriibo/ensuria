@@ -7,6 +7,7 @@ import {APP_INTERCEPTOR} from "@nestjs/core";
 import {ErrorsInterceptor} from "presentation/interceptors";
 import {ShopModule} from "infrastructure/modules/shop/shop.module";
 import {PaymentModule} from "infrastructure/modules/payment/payment.module";
+import {ClientModule} from "infrastructure/modules/client/client.module";
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import {PaymentModule} from "infrastructure/modules/payment/payment.module";
     SettingsModule,
     ShopModule,
     PaymentModule,
+    ClientModule,
   ],
   providers: [
     {

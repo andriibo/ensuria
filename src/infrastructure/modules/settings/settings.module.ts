@@ -11,6 +11,7 @@ import {SettingsService} from "infrastructure/modules/settings/services";
 
 @Module({
     imports: [TypeOrmModule.forFeature([SettingsModel])],
+    exports: [ISettingsRepository],
     controllers: [SettingsController],
     providers: [
         SettingsUseCasesFactory,

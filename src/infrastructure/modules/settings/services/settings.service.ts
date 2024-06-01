@@ -12,10 +12,9 @@ export class SettingsService implements ISettingsService {
   ) {}
 
   async save(commissionA: number, commissionB: number, blockingD: number): Promise<SettingsEntity> {
-    const settings = new SettingsModel();
-    const findModel = await this.settingsRepository.findOne();
-    if (findModel) {
-      settings.id = findModel.id;
+    let settings = await this.settingsRepository.findOne();
+    if (!settings) {
+      settings = new SettingsModel();
     }
     settings.commissionA = commissionA;
     settings.commissionB = commissionB;

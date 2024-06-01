@@ -3,27 +3,31 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryColumn,
-  UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  Unique,
 } from 'typeorm';
-import {PaymentEntity} from 'domain/entities';
+import {PaymentHistoryEntity} from 'domain/entities';
 import {StatusEnum} from "domain/enums";
-import {ShopModel} from "infrastructure/modules/shop/models";
+import {PaymentModel} from "infrastructure/modules/payment/models/payment.model";
 
-@Entity('payment')
-export class PaymentModel implements PaymentEntity {
+@Entity('payment_history')
+@Unique(['paymentId', 'status'])
+export class PaymentHistoryModel implements PaymentHistoryEntity {
   @PrimaryColumn({
     generated: 'uuid',
     type: 'uuid',
   })
   id: string;
 
-  @Column('uuid', { name: 'shop_id' })
-  shopId: string;
+  @Column('uuid', { name: 'payment_id' })
+  paymentId: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   amount: number;
+
+  @Column({ name: 'amount_blocked', type: 'decimal', precision: 10, scale: 2, default: 0 })
+  amountBlocked: number;
 
   @Column({
     type: 'enum',
@@ -39,17 +43,10 @@ export class PaymentModel implements PaymentEntity {
   })
   createdAt: Date;
 
-  @UpdateDateColumn({
-    type: 'timestamp',
-    name: 'updated_at',
-    default: () => 'now()',
-  })
-  updatedAt: Date;
-
-  @ManyToOne(() => ShopModel, {
+  @ManyToOne(() => PaymentModel, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'shop_id', referencedColumnName: 'id' })
-  shop: ShopModel;
+  @JoinColumn({ name: 'payment_id', referencedColumnName: 'id' })
+  payment: PaymentModel;
 }

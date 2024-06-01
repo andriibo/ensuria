@@ -1,18 +1,15 @@
 import {
   Column,
   CreateDateColumn,
-  Entity,
+  Entity, JoinColumn, OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
-  ManyToOne,
-  JoinColumn,
 } from 'typeorm';
-import {PaymentEntity} from 'domain/entities';
-import {StatusEnum} from "domain/enums";
+import {ClientEntity} from 'domain/entities';
 import {ShopModel} from "infrastructure/modules/shop/models";
 
-@Entity('payment')
-export class PaymentModel implements PaymentEntity {
+@Entity('client')
+export class ClientModel implements ClientEntity {
   @PrimaryColumn({
     generated: 'uuid',
     type: 'uuid',
@@ -22,15 +19,8 @@ export class PaymentModel implements PaymentEntity {
   @Column('uuid', { name: 'shop_id' })
   shopId: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  amount: number;
-
-  @Column({
-    type: 'enum',
-    enum: StatusEnum,
-    default: StatusEnum.New
-  })
-  status: StatusEnum;
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  balance: number;
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -46,7 +36,7 @@ export class PaymentModel implements PaymentEntity {
   })
   updatedAt: Date;
 
-  @ManyToOne(() => ShopModel, {
+  @OneToOne(() => ShopModel, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })

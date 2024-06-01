@@ -18,6 +18,9 @@ export class ShopModel implements ShopEntity {
   @Column({ type: 'varchar', unique: true, length: 100 })
   name: string;
 
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  balance: number;
+
   @Column({ type: 'decimal', precision: 4, scale: 2, comment: 'in percents' })
   commissionC: number;
 

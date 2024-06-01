@@ -1,13 +1,13 @@
 import {Body, Controller, HttpCode, HttpStatus, Post} from '@nestjs/common';
 import {
     ApiBadRequestResponse,
-    ApiConsumes, ApiNotFoundResponse,
+    ApiConsumes, ApiNoContentResponse, ApiNotFoundResponse,
     ApiOkResponse,
     ApiTags,
     ApiUnprocessableEntityResponse
 } from "@nestjs/swagger";
 import {PaymentUseCasesFactory} from "infrastructure/modules/payment/factories";
-import {CreatePaymentRequestView} from "presentation/views/requests/payment";
+import {CreatePaymentRequestView, ProceedPaymentsRequestView} from "presentation/views/requests/payment";
 import {CreatePaymentResponseDto} from "domain/dto/responses/payment";
 import {CreatePaymentResponseView} from "presentation/views/responses/payment";
 
@@ -30,5 +30,17 @@ export class PaymentController {
             this.paymentUseCasesFactory.createAddPaymentUseCase();
 
         return await useCase.create(request);
+    }
+
+    @Post('proceed')
+    @HttpCode(HttpStatus.NO_CONTENT)
+    @ApiNoContentResponse({ description: 'No content' })
+    @ApiUnprocessableEntityResponse({ description: 'Unprocessable entity' })
+    @ApiNotFoundResponse({ description: 'Not found' })
+    async proceed(@Body() request: ProceedPaymentsRequestView): Promise<void> {
+        const useCase =
+            this.paymentUseCasesFactory.createProceedPaymentsUseCase();
+
+        return await useCase.proceed(request.paymentIds);
     }
 }
