@@ -7,6 +7,7 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
+  Index,
 } from 'typeorm';
 import {PaymentEntity} from 'domain/entities';
 import {StatusEnum} from "domain/enums";
@@ -27,6 +28,7 @@ export class PaymentModel implements PaymentEntity {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   amount: number;
 
+  @Index()
   @Column({
     type: 'enum',
     enum: StatusEnum,
