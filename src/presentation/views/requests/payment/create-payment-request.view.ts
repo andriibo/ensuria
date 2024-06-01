@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {IsNotEmpty, IsUUID, Max, Min} from 'class-validator';
 import { Transform, TransformFnParams } from 'class-transformer';
 import {CreatePaymentRequestDto} from "domain/dto/requests/payment";
+import {MaxAmount, MinAmount} from "domain/const";
 
 export class CreatePaymentRequestView extends CreatePaymentRequestDto {
   @ApiProperty()
@@ -9,10 +10,10 @@ export class CreatePaymentRequestView extends CreatePaymentRequestDto {
   @IsUUID()
   shopId: string;
 
-  @ApiProperty()
+  @ApiProperty({minimum: MinAmount, maximum: MaxAmount})
   @IsNotEmpty()
-  @Min(1)
-  @Max(1000000)
+  @Min(MinAmount)
+  @Max(MaxAmount)
   @Transform(({ value }: TransformFnParams) => parseFloat(value))
   amount: number;
 }
