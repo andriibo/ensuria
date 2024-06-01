@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import {PaymentEntity} from "domain/entities";
 import {CreatePaymentCommand} from "application/modules/payment/commands";
-import {IPaymentService} from "application/modules/payment/services";
+import {ICreatePaymentService} from "application/modules/payment/services";
 import {IShopRepository} from "domain/repositories";
 import {NotFoundError} from "application/errors";
 
@@ -12,7 +12,7 @@ export class CreatePaymentHandler
 {
   constructor(
       @Inject(IShopRepository) private readonly shopRepository: IShopRepository,
-      @Inject(IPaymentService) private readonly paymentService: IPaymentService,
+      @Inject(ICreatePaymentService) private readonly createPaymentService: ICreatePaymentService,
   ) {}
 
   async execute(command: CreatePaymentCommand): Promise<PaymentEntity> {
@@ -23,6 +23,6 @@ export class CreatePaymentHandler
       throw new NotFoundError('Shop not found.');
     }
 
-    return await this.paymentService.create(shopId, amount);
+    return await this.createPaymentService.create(shopId, amount);
   }
 }

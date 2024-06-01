@@ -1,6 +1,6 @@
 import { CommandBus } from '@nestjs/cqrs';
 import { Injectable } from '@nestjs/common';
-import {CreatePaymentUseCase, ProceedPaymentsUseCase} from "application/modules/payment/use-cases";
+import {CreatePaymentUseCase, PaymentsDoneUseCase, PaymentsProceedUseCase} from "application/modules/payment/use-cases";
 
 @Injectable()
 export class PaymentUseCasesFactory {
@@ -10,7 +10,11 @@ export class PaymentUseCasesFactory {
     return new CreatePaymentUseCase(this.commandBus);
   }
 
-  createProceedPaymentsUseCase(): ProceedPaymentsUseCase {
-    return new ProceedPaymentsUseCase(this.commandBus);
+  createPaymentsProceedUseCase(): PaymentsProceedUseCase {
+    return new PaymentsProceedUseCase(this.commandBus);
+  }
+
+  createPaymentsDoneUseCase(): PaymentsDoneUseCase {
+    return new PaymentsDoneUseCase(this.commandBus);
   }
 }

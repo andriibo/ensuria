@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {IPaymentRepository} from 'domain/repositories';
 import {PaymentEntity} from "domain/entities";
-import {IPaymentService} from "application/modules/payment/services";
+import {ICreatePaymentService} from "application/modules/payment/services";
 import {PaymentHistoryModel, PaymentModel} from "infrastructure/modules/payment/models";
 import {DataSource} from "typeorm";
 import {InjectDataSource} from "@nestjs/typeorm";
 
 @Injectable()
-export class PaymentService implements IPaymentService {
+export class CreatePaymentService implements ICreatePaymentService {
   constructor(
     @Inject(IPaymentRepository)
     protected readonly paymentRepository: IPaymentRepository,

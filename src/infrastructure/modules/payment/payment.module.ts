@@ -5,9 +5,17 @@ import {PaymentHistoryModel, PaymentModel} from "infrastructure/modules/payment/
 import {PaymentUseCasesFactory} from "infrastructure/modules/payment/factories";
 import {PaymentHistoryRepository, PaymentRepository} from "infrastructure/modules/payment/repositories";
 import {PaymentController} from "presentation/controllers/payment.controller";
-import {CreatePaymentHandler, ProceedPaymentsHandler} from "application/modules/payment/handlers";
-import {IPaymentService, IProceedPaymentsService} from "application/modules/payment/services";
-import {PaymentService, ProceedPaymentsService} from "infrastructure/modules/payment/services";
+import {CreatePaymentHandler, PaymentsDoneHandler, PaymentsProceedHandler} from "application/modules/payment/handlers";
+import {
+    ICreatePaymentService,
+    IPaymentsDoneService,
+    IPaymentsProceedService
+} from "application/modules/payment/services";
+import {
+    CreatePaymentService,
+    PaymentsDoneService,
+    PaymentsProceedService
+} from "infrastructure/modules/payment/services";
 import {ShopModule} from "infrastructure/modules/shop/shop.module";
 import {SettingsModule} from "infrastructure/modules/settings/settings.module";
 import {AmountBlockedCalculator, CommissionCalculator} from "domain/calculators";
@@ -19,7 +27,8 @@ import {ClientModule} from "infrastructure/modules/client/client.module";
     providers: [
         PaymentUseCasesFactory,
         CreatePaymentHandler,
-        ProceedPaymentsHandler,
+        PaymentsProceedHandler,
+        PaymentsDoneHandler,
         CommissionCalculator,
         AmountBlockedCalculator,
         {
@@ -31,12 +40,16 @@ import {ClientModule} from "infrastructure/modules/client/client.module";
             useClass: PaymentHistoryRepository,
         },
         {
-            provide: IPaymentService,
-            useClass: PaymentService,
+            provide: ICreatePaymentService,
+            useClass: CreatePaymentService,
         },
         {
-            provide: IProceedPaymentsService,
-            useClass: ProceedPaymentsService,
+            provide: IPaymentsProceedService,
+            useClass: PaymentsProceedService,
+        },
+        {
+            provide: IPaymentsDoneService,
+            useClass: PaymentsDoneService,
         },
     ],
 })

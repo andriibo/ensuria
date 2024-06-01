@@ -1,2 +1,3 @@
 export * from './create-payment.use-case';
-export * from './proceed-payments.use-case';
+export * from './payments-proceed.use-case';
+export * from './payments-done.use-case';

@@ -17,6 +17,14 @@ export class PaymentRepository implements IPaymentRepository {
     return await this.repository.findBy({id: In(ids), status: StatusEnum.New});
   }
 
+  async findProceedByIds(ids: string[]): Promise<PaymentEntity[]> {
+    console.log(StatusEnum.Proceed);
+    return await this.repository.find({
+      relations: ['paymentHistory'],
+      where: {id: In(ids), status: StatusEnum.Proceed}
+    });
+  }
+
   async save(entity: PaymentModel): Promise<PaymentEntity> {
     return await this.repository.save(entity);
   }

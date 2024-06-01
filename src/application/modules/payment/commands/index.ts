@@ -1,2 +1,3 @@
 export * from './create-payment.command';
-export * from './proceed-payments.command';
+export * from './payments-proceed.command';
+export * from './payments-done.command';

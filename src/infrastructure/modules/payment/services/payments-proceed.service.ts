@@ -1,5 +1,4 @@
 import {Inject, Injectable} from '@nestjs/common';
-import {IProceedPaymentsService} from "application/modules/payment/services";
 import {NotFoundError} from "application/errors";
 import {StatusEnum} from "domain/enums";
 import {IClientRepository, IPaymentRepository, ISettingsRepository, IShopRepository} from "domain/repositories";
@@ -9,9 +8,10 @@ import {PaymentHistoryModel} from "infrastructure/modules/payment/models";
 import {ClientEntity, PaymentEntity, SettingsEntity, ShopEntity} from "domain/entities";
 import {AmountBlockedCalculator, CommissionCalculator} from "domain/calculators";
 import {ClientModel} from "infrastructure/modules/client/models";
+import {IPaymentsProceedService} from "application/modules/payment/services";
 
 @Injectable()
-export class ProceedPaymentsService implements IProceedPaymentsService {
+export class PaymentsProceedService implements IPaymentsProceedService {
   private clients: Map<string, ClientEntity> = new Map();
   private shops: Map<string, ShopEntity> = new Map();
 

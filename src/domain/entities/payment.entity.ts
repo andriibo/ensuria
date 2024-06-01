@@ -1,5 +1,6 @@
 import {StatusEnum} from "domain/enums";
-import {ShopEntity} from "domain/entities/shop.entity";
+import {ShopEntity} from "domain/entities";
+import {PaymentHistoryEntity} from "domain/entities";
 
 export interface PaymentEntity {
   id: string;
@@ -9,4 +10,5 @@ export interface PaymentEntity {
   createdAt: Date;
   updatedAt: Date;
   shop: ShopEntity;
+  paymentHistory: PaymentHistoryEntity[]
 }

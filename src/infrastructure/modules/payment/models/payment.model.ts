@@ -5,11 +5,13 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToMany,
   JoinColumn,
 } from 'typeorm';
 import {PaymentEntity} from 'domain/entities';
 import {StatusEnum} from "domain/enums";
 import {ShopModel} from "infrastructure/modules/shop/models";
+import {PaymentHistoryModel} from "infrastructure/modules/payment/models/payment-history.model";
 
 @Entity('payment')
 export class PaymentModel implements PaymentEntity {
@@ -52,4 +54,8 @@ export class PaymentModel implements PaymentEntity {
   })
   @JoinColumn({ name: 'shop_id', referencedColumnName: 'id' })
   shop: ShopModel;
+
+  @OneToMany(() => PaymentHistoryModel, (paymentHistory) => paymentHistory.payment)
+  @JoinColumn({ name: 'shop_id', referencedColumnName: 'id' })
+  paymentHistory: PaymentHistoryModel[];
 }

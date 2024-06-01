@@ -1,7 +1,7 @@
 import {PaymentEntity} from 'domain/entities';
 
-export interface IPaymentService {
+export interface ICreatePaymentService {
   create(shopId: string, amount: number): Promise<PaymentEntity>;
 }
 
-export const IPaymentService = Symbol('IPaymentService');
+export const ICreatePaymentService = Symbol('ICreatePaymentService');

@@ -1,2 +1,2 @@
 export * from './create-payment-request.view';
-export * from './proceed-payments-request.view';
+export * from './payments-request.view';

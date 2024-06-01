@@ -7,7 +7,7 @@ import {
     ApiUnprocessableEntityResponse
 } from "@nestjs/swagger";
 import {PaymentUseCasesFactory} from "infrastructure/modules/payment/factories";
-import {CreatePaymentRequestView, ProceedPaymentsRequestView} from "presentation/views/requests/payment";
+import {CreatePaymentRequestView, PaymentsRequestView} from "presentation/views/requests/payment";
 import {CreatePaymentResponseDto} from "domain/dto/responses/payment";
 import {CreatePaymentResponseView} from "presentation/views/responses/payment";
 
@@ -37,10 +37,22 @@ export class PaymentController {
     @ApiNoContentResponse({ description: 'No content' })
     @ApiUnprocessableEntityResponse({ description: 'Unprocessable entity' })
     @ApiNotFoundResponse({ description: 'Not found' })
-    async proceed(@Body() request: ProceedPaymentsRequestView): Promise<void> {
+    async proceed(@Body() request: PaymentsRequestView): Promise<void> {
         const useCase =
-            this.paymentUseCasesFactory.createProceedPaymentsUseCase();
+            this.paymentUseCasesFactory.createPaymentsProceedUseCase();
 
         return await useCase.proceed(request.paymentIds);
+    }
+
+    @Post('done')
+    @HttpCode(HttpStatus.NO_CONTENT)
+    @ApiNoContentResponse({ description: 'No content' })
+    @ApiUnprocessableEntityResponse({ description: 'Unprocessable entity' })
+    @ApiNotFoundResponse({ description: 'Not found' })
+    async done(@Body() request: PaymentsRequestView): Promise<void> {
+        const useCase =
+            this.paymentUseCasesFactory.createPaymentsDoneUseCase();
+
+        return await useCase.done(request.paymentIds);
     }
 }
