@@ -1,4 +1,4 @@
-import {Body, Controller, HttpCode, HttpStatus, Post} from '@nestjs/common';
+import {Body, Controller, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post} from '@nestjs/common';
 import {
     ApiBadRequestResponse,
     ApiConsumes, ApiNoContentResponse, ApiNotFoundResponse,
@@ -8,8 +8,9 @@ import {
 } from "@nestjs/swagger";
 import {PaymentUseCasesFactory} from "infrastructure/modules/payment/factories";
 import {CreatePaymentRequestView, PaymentsRequestView} from "presentation/views/requests/payment";
-import {CreatePaymentResponseDto} from "domain/dto/responses/payment";
+import {CreatePaymentResponseDto, PaymentsPaidResponseDto} from "domain/dto/responses/payment";
 import {CreatePaymentResponseView} from "presentation/views/responses/payment";
+import {PaymentsPaidResponseView} from "presentation/views/responses/payment/payments-paid-response.view";
 
 @Controller('payments')
 @ApiTags('Payment')
@@ -41,7 +42,7 @@ export class PaymentController {
         const useCase =
             this.paymentUseCasesFactory.createPaymentsProceedUseCase();
 
-        return await useCase.proceed(request.paymentIds);
+        await useCase.proceed(request.paymentIds);
     }
 
     @Post('done')
@@ -53,6 +54,18 @@ export class PaymentController {
         const useCase =
             this.paymentUseCasesFactory.createPaymentsDoneUseCase();
 
-        return await useCase.done(request.paymentIds);
+        await useCase.done(request.paymentIds);
+    }
+
+    @Post('/:shopId/paid')
+    @HttpCode(HttpStatus.OK)
+    @ApiOkResponse({ type: PaymentsPaidResponseView })
+    @ApiUnprocessableEntityResponse({ description: 'Unprocessable entity' })
+    @ApiNotFoundResponse({ description: 'Not found' })
+    async paid(@Param('shopId', ParseUUIDPipe) shopId: string): Promise<PaymentsPaidResponseDto> {
+        const useCase =
+            this.paymentUseCasesFactory.createPaymentsPaidUseCase();
+
+        return await useCase.paid(shopId);
     }
 }

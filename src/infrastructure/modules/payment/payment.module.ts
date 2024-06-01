@@ -5,15 +5,20 @@ import {PaymentHistoryModel, PaymentModel} from "infrastructure/modules/payment/
 import {PaymentUseCasesFactory} from "infrastructure/modules/payment/factories";
 import {PaymentHistoryRepository, PaymentRepository} from "infrastructure/modules/payment/repositories";
 import {PaymentController} from "presentation/controllers/payment.controller";
-import {CreatePaymentHandler, PaymentsDoneHandler, PaymentsProceedHandler} from "application/modules/payment/handlers";
+import {
+    CreatePaymentHandler,
+    PaymentsDoneHandler,
+    PaymentsPaidHandler,
+    PaymentsProceedHandler
+} from "application/modules/payment/handlers";
 import {
     ICreatePaymentService,
-    IPaymentsDoneService,
+    IPaymentsDoneService, IPaymentsPaidService,
     IPaymentsProceedService
 } from "application/modules/payment/services";
 import {
     CreatePaymentService,
-    PaymentsDoneService,
+    PaymentsDoneService, PaymentsPaidService,
     PaymentsProceedService
 } from "infrastructure/modules/payment/services";
 import {ShopModule} from "infrastructure/modules/shop/shop.module";
@@ -29,6 +34,7 @@ import {ClientModule} from "infrastructure/modules/client/client.module";
         CreatePaymentHandler,
         PaymentsProceedHandler,
         PaymentsDoneHandler,
+        PaymentsPaidHandler,
         CommissionCalculator,
         AmountBlockedCalculator,
         {
@@ -50,6 +56,10 @@ import {ClientModule} from "infrastructure/modules/client/client.module";
         {
             provide: IPaymentsDoneService,
             useClass: PaymentsDoneService,
+        },
+        {
+            provide: IPaymentsPaidService,
+            useClass: PaymentsPaidService,
         },
     ],
 })
