@@ -2,7 +2,7 @@ import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
 import {Inject} from '@nestjs/common';
 import {PaymentsPaidCommand} from "application/modules/payment/commands";
 import {IPaymentRepository} from "domain/repositories";
-import {IMakePaymentService} from "application/modules/payment/services";
+import {IPaymentPaidService} from "application/modules/payment/services";
 
 @CommandHandler(PaymentsPaidCommand)
 export class PaymentsPaidHandler
@@ -10,7 +10,7 @@ export class PaymentsPaidHandler
 {
   constructor(
       @Inject(IPaymentRepository) private readonly paymentRepository: IPaymentRepository,
-      @Inject(IMakePaymentService) private readonly payPaymentService: IMakePaymentService,
+      @Inject(IPaymentPaidService) private readonly paymentPaidService: IPaymentPaidService,
   ) {}
 
   async execute(command: PaymentsPaidCommand): Promise<void> {
@@ -21,7 +21,7 @@ export class PaymentsPaidHandler
     }
 
     for await (const payment of payments) {
-      await this.payPaymentService.make(payment);
+      await this.paymentPaidService.pay(payment);
     }
   }
 }

@@ -4,7 +4,7 @@ import {IPaymentDoneService} from "application/modules/payment/services";
 import {StatusEnum} from "domain/enums";
 import {InjectDataSource} from "@nestjs/typeorm";
 import {DataSource} from "typeorm";
-import {PaymentHistoryModel} from "infrastructure/modules/payment/models";
+import {PaymentHistoryModel, PaymentModel} from "infrastructure/modules/payment/models";
 import {NotFoundError} from "application/errors";
 import {IClientRepository} from "domain/repositories";
 import {ClientModel} from "infrastructure/modules/client/models";
@@ -16,7 +16,7 @@ export class PaymentDoneService implements IPaymentDoneService {
       @InjectDataSource() private readonly dataSource: DataSource
   ) {}
 
-  async do(payment: PaymentEntity): Promise<PaymentEntity> {
+  async do(payment: PaymentEntity): Promise<void> {
     const paymentProceed = payment.paymentHistory.find(history => history.status === StatusEnum.Proceed);
     if (!paymentProceed) {
       throw new NotFoundError('PaymentHistory not found.');
@@ -31,22 +31,16 @@ export class PaymentDoneService implements IPaymentDoneService {
     const amountHistory = paymentProceed.amount + paymentProceed.amountBlocked;
     const paymentId = payment.id;
 
-    return await this.dataSource.transaction(async (entityManager) => {
-      const paymentHistoryModel = entityManager.create(PaymentHistoryModel, {
+    await this.dataSource.transaction(async (entityManager) => {
+      await entityManager.insert(PaymentHistoryModel, {
         paymentId,
         amount: amountHistory,
         amountBlocked: 0,
         status
       });
-      const paymentHistory = await entityManager.save(paymentHistoryModel);
-      payment.paymentHistory.push(paymentHistory);
-      payment.status = status;
-      const paymentUpdated = await entityManager.save(payment);
-
+      await entityManager.update(PaymentModel, {id: paymentId}, {status});
       const balance = client.balance + paymentProceed.amountBlocked;
       await entityManager.update(ClientModel, {id: client.id}, {balance});
-
-      return paymentUpdated;
     });
   }
 }

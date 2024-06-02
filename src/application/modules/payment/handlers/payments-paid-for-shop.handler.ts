@@ -3,7 +3,7 @@ import {Inject} from '@nestjs/common';
 import {PaymentsPaidForShopCommand} from "application/modules/payment/commands";
 import {PaymentResponseDto, PaymentsPaidResponseDto} from "domain/dto/responses/payment";
 import {IPaymentRepository} from "domain/repositories";
-import {IMakePaymentService} from "application/modules/payment/services";
+import {IPaymentPaidService} from "application/modules/payment/services";
 
 @CommandHandler(PaymentsPaidForShopCommand)
 export class PaymentsPaidForShopHandler
@@ -11,7 +11,7 @@ export class PaymentsPaidForShopHandler
 {
   constructor(
       @Inject(IPaymentRepository) private readonly paymentRepository: IPaymentRepository,
-      @Inject(IMakePaymentService) private readonly makePaymentService: IMakePaymentService,
+      @Inject(IPaymentPaidService) private readonly paymentPaidService: IPaymentPaidService,
   ) {}
 
   async execute(command: PaymentsPaidForShopCommand): Promise<PaymentsPaidResponseDto> {
@@ -24,7 +24,7 @@ export class PaymentsPaidForShopHandler
 
     const response = new PaymentsPaidResponseDto();
     for await (const payment of payments) {
-      const amount = await this.makePaymentService.make(payment);
+      const amount = await this.paymentPaidService.pay(payment);
       if (amount) {
         response.totalAmount += amount;
         response.payments.push(new PaymentResponseDto(payment.id, amount));

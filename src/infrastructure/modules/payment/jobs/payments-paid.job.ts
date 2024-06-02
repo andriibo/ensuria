@@ -6,7 +6,7 @@ import {PaymentUseCasesFactory} from "infrastructure/modules/payment/factories";
 export class PaymentsPaidJob {
   constructor(private readonly paymentUseCasesFactory: PaymentUseCasesFactory) {}
 
-  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  @Cron(CronExpression.EVERY_MINUTE)
   async pay(): Promise<void> {
     const useCase = this.paymentUseCasesFactory.createPaymentsPaidUseCase();
     try {

@@ -19,8 +19,8 @@ export class PaymentPaidService implements IPaymentPaidService {
   ) {}
 
   async pay(payment: PaymentEntity): Promise<number | undefined> {
-    const paymentDone = payment.paymentHistory.find(history => history.status === StatusEnum.Done);
-    if (!paymentDone) {
+    const paymentHistory = payment.paymentHistory.find(history => history.status === payment.status);
+    if (!paymentHistory) {
       throw new NotFoundError('PaymentHistory not found.');
     }
 
@@ -29,7 +29,11 @@ export class PaymentPaidService implements IPaymentPaidService {
       throw new NotFoundError('Client not found.');
     }
 
-    if (client.balance < paymentDone.amount) {
+    const amountHistoryPaid = (paymentHistory.status === StatusEnum.Proceed)
+        ? paymentHistory.amount + paymentHistory.amountBlocked
+        : paymentHistory.amount;
+
+    if (client.balance < amountHistoryPaid) {
       return;
     }
 
@@ -44,17 +48,17 @@ export class PaymentPaidService implements IPaymentPaidService {
     return await this.dataSource.transaction(async (entityManager) => {
       await entityManager.insert(PaymentHistoryModel, {
         paymentId,
-        amount: paymentDone.amount,
+        amount: amountHistoryPaid,
         status
       });
       await entityManager.update(PaymentModel, {id: paymentId}, {status});
-      const shopBalance = shop.balance + paymentDone.amount;
+      const shopBalance = shop.balance + amountHistoryPaid;
       await entityManager.update(ShopModel, {id: shop.id}, {balance: shopBalance});
 
-      const clientBalance = client.balance - paymentDone.amount;
+      const clientBalance = client.balance - amountHistoryPaid;
       await entityManager.update(ClientModel, {id: client.id}, {balance: clientBalance});
 
-      return paymentDone.amount;
+      return amountHistoryPaid;
     });
   }
 }

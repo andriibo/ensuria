@@ -14,7 +14,6 @@ import {
 } from "application/modules/payment/handlers";
 import {
     ICreatePaymentService,
-    IMakePaymentService,
     IPaymentDoneService,
     IPaymentPaidService,
     IPaymentsProceedService,
@@ -24,7 +23,6 @@ import {
     PaymentDoneService,
     PaymentPaidService,
     PaymentsProceedService,
-    MakePaymentService
 } from "infrastructure/modules/payment/services";
 import {ShopModule} from "infrastructure/modules/shop/shop.module";
 import {SettingsModule} from "infrastructure/modules/settings/settings.module";
@@ -68,10 +66,6 @@ import {PaymentsPaidJob} from "infrastructure/modules/payment/jobs";
         {
             provide: IPaymentPaidService,
             useClass: PaymentPaidService,
-        },
-        {
-            provide: IMakePaymentService,
-            useClass: MakePaymentService,
         },
     ],
 })
