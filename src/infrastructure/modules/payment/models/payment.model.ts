@@ -13,6 +13,7 @@ import {PaymentEntity} from 'domain/entities';
 import {StatusEnum} from "domain/enums";
 import {ShopModel} from "infrastructure/modules/shop/models";
 import {PaymentHistoryModel} from "infrastructure/modules/payment/models/payment-history.model";
+import {DecimalColumnTransformer} from "infrastructure/transformers";
 
 @Entity('payment')
 export class PaymentModel implements PaymentEntity {
@@ -25,7 +26,7 @@ export class PaymentModel implements PaymentEntity {
   @Column('uuid', { name: 'shop_id' })
   shopId: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, transformer: new DecimalColumnTransformer() })
   amount: number;
 
   @Index()

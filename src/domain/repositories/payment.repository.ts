@@ -3,7 +3,8 @@ import {PaymentEntity} from 'domain/entities';
 export interface IPaymentRepository {
   findNewByIds(ids: string[]): Promise<PaymentEntity[]>;
   findProceedByIds(ids: string[]): Promise<PaymentEntity[]>;
-  findDoneByShopId(shopId: string): Promise<PaymentEntity[]>;
+  findProceedAndDoneByShopId(shopId: string): Promise<PaymentEntity[]>;
+  findProceedAndDone(): Promise<PaymentEntity[]>;
   save(entity: PaymentEntity): Promise<PaymentEntity>;
 }
 

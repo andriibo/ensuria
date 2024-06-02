@@ -54,7 +54,7 @@ export class PaymentController {
         const useCase =
             this.paymentUseCasesFactory.createPaymentsDoneUseCase();
 
-        await useCase.done(request.paymentIds);
+        await useCase.do(request.paymentIds);
     }
 
     @Post('/:shopId/paid')
@@ -64,8 +64,8 @@ export class PaymentController {
     @ApiNotFoundResponse({ description: 'Not found' })
     async paid(@Param('shopId', ParseUUIDPipe) shopId: string): Promise<PaymentsPaidResponseDto> {
         const useCase =
-            this.paymentUseCasesFactory.createPaymentsPaidUseCase();
+            this.paymentUseCasesFactory.createPaymentsPaidForShopUseCase();
 
-        return await useCase.paid(shopId);
+        return await useCase.pay(shopId);
     }
 }

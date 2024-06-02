@@ -3,8 +3,9 @@ import { Injectable } from '@nestjs/common';
 import {
   CreatePaymentUseCase,
   PaymentsDoneUseCase,
-  PaymentsPaidUseCase,
-  PaymentsProceedUseCase
+  PaymentsPaidForShopUseCase,
+  PaymentsProceedUseCase,
+  PaymentsPaidUseCase
 } from "application/modules/payment/use-cases";
 
 @Injectable()
@@ -21,6 +22,10 @@ export class PaymentUseCasesFactory {
 
   createPaymentsDoneUseCase(): PaymentsDoneUseCase {
     return new PaymentsDoneUseCase(this.commandBus);
+  }
+
+  createPaymentsPaidForShopUseCase(): PaymentsPaidForShopUseCase {
+    return new PaymentsPaidForShopUseCase(this.commandBus);
   }
 
   createPaymentsPaidUseCase(): PaymentsPaidUseCase {

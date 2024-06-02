@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import {ShopEntity} from 'domain/entities';
+import {DecimalColumnTransformer} from "infrastructure/transformers";
 
 @Entity('shop')
 export class ShopModel implements ShopEntity {
@@ -18,10 +19,10 @@ export class ShopModel implements ShopEntity {
   @Column({ type: 'varchar', unique: true, length: 100 })
   name: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0, transformer: new DecimalColumnTransformer() })
   balance: number;
 
-  @Column({ type: 'decimal', precision: 4, scale: 2, comment: 'in percents' })
+  @Column({ type: 'decimal', precision: 4, scale: 2, comment: 'in percents', transformer: new DecimalColumnTransformer() })
   commissionC: number;
 
   @CreateDateColumn({

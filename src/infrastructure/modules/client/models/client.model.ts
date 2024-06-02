@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import {ClientEntity} from 'domain/entities';
 import {ShopModel} from "infrastructure/modules/shop/models";
+import {DecimalColumnTransformer} from "infrastructure/transformers";
 
 @Entity('client')
 export class ClientModel implements ClientEntity {
@@ -19,7 +20,7 @@ export class ClientModel implements ClientEntity {
   @Column('uuid', { name: 'shop_id' })
   shopId: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0, transformer: new DecimalColumnTransformer() })
   balance: number;
 
   @CreateDateColumn({

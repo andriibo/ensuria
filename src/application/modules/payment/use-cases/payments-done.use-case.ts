@@ -4,7 +4,7 @@ import {PaymentsDoneCommand} from 'application/modules/payment/commands';
 export class PaymentsDoneUseCase {
   constructor(private readonly commandBus: ICommandBus) {}
 
-  async done(paymentIds: string[]): Promise<void> {
+  async do(paymentIds: string[]): Promise<void> {
     await this.commandBus.execute(new PaymentsDoneCommand(paymentIds));
   }
 }

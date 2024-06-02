@@ -1,20 +1,27 @@
 import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
 import {Inject} from '@nestjs/common';
 import {PaymentsPaidCommand} from "application/modules/payment/commands";
-import {IPaymentsPaidService} from "application/modules/payment/services";
-import {PaymentsPaidResponseDto} from "domain/dto/responses/payment";
+import {IPaymentRepository} from "domain/repositories";
+import {IMakePaymentService} from "application/modules/payment/services";
 
 @CommandHandler(PaymentsPaidCommand)
 export class PaymentsPaidHandler
   implements ICommandHandler<PaymentsPaidCommand>
 {
   constructor(
-      @Inject(IPaymentsPaidService) private readonly paymentsPaidService: IPaymentsPaidService,
+      @Inject(IPaymentRepository) private readonly paymentRepository: IPaymentRepository,
+      @Inject(IMakePaymentService) private readonly payPaymentService: IMakePaymentService,
   ) {}
 
-  async execute(command: PaymentsPaidCommand): Promise<PaymentsPaidResponseDto> {
-    const { shopId } = command;
+  async execute(command: PaymentsPaidCommand): Promise<void> {
+    const payments = await this.paymentRepository.findProceedAndDone();
 
-    return await this.paymentsPaidService.paid(shopId);
+    if (!payments.length) {
+      return;
+    }
+
+    for await (const payment of payments) {
+      await this.payPaymentService.make(payment);
+    }
   }
 }

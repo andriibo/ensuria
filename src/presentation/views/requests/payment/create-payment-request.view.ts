@@ -5,7 +5,7 @@ import {CreatePaymentRequestDto} from "domain/dto/requests/payment";
 import {MaxAmount, MinAmount} from "domain/const";
 
 export class CreatePaymentRequestView extends CreatePaymentRequestDto {
-  @ApiProperty()
+  @ApiProperty({format: 'uuid'})
   @IsNotEmpty()
   @IsUUID()
   shopId: string;

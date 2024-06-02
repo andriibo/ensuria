@@ -8,23 +8,29 @@ import {PaymentController} from "presentation/controllers/payment.controller";
 import {
     CreatePaymentHandler,
     PaymentsDoneHandler,
-    PaymentsPaidHandler,
-    PaymentsProceedHandler
+    PaymentsPaidForShopHandler,
+    PaymentsProceedHandler,
+    PaymentsPaidHandler
 } from "application/modules/payment/handlers";
 import {
     ICreatePaymentService,
-    IPaymentsDoneService, IPaymentsPaidService,
-    IPaymentsProceedService
+    IMakePaymentService,
+    IPaymentDoneService,
+    IPaymentPaidService,
+    IPaymentsProceedService,
 } from "application/modules/payment/services";
 import {
     CreatePaymentService,
-    PaymentsDoneService, PaymentsPaidService,
-    PaymentsProceedService
+    PaymentDoneService,
+    PaymentPaidService,
+    PaymentsProceedService,
+    MakePaymentService
 } from "infrastructure/modules/payment/services";
 import {ShopModule} from "infrastructure/modules/shop/shop.module";
 import {SettingsModule} from "infrastructure/modules/settings/settings.module";
 import {AmountBlockedCalculator, CommissionCalculator} from "domain/calculators";
 import {ClientModule} from "infrastructure/modules/client/client.module";
+import {PaymentsPaidJob} from "infrastructure/modules/payment/jobs";
 
 @Module({
     imports: [TypeOrmModule.forFeature([PaymentModel, PaymentHistoryModel]), ShopModule, SettingsModule, ClientModule],
@@ -34,9 +40,11 @@ import {ClientModule} from "infrastructure/modules/client/client.module";
         CreatePaymentHandler,
         PaymentsProceedHandler,
         PaymentsDoneHandler,
+        PaymentsPaidForShopHandler,
         PaymentsPaidHandler,
         CommissionCalculator,
         AmountBlockedCalculator,
+        PaymentsPaidJob,
         {
             provide: IPaymentRepository,
             useClass: PaymentRepository,
@@ -54,12 +62,16 @@ import {ClientModule} from "infrastructure/modules/client/client.module";
             useClass: PaymentsProceedService,
         },
         {
-            provide: IPaymentsDoneService,
-            useClass: PaymentsDoneService,
+            provide: IPaymentDoneService,
+            useClass: PaymentDoneService,
         },
         {
-            provide: IPaymentsPaidService,
-            useClass: PaymentsPaidService,
+            provide: IPaymentPaidService,
+            useClass: PaymentPaidService,
+        },
+        {
+            provide: IMakePaymentService,
+            useClass: MakePaymentService,
         },
     ],
 })

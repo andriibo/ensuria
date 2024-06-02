@@ -14,7 +14,10 @@ export class PaymentRepository implements IPaymentRepository {
   ) {}
 
   async findNewByIds(ids: string[]): Promise<PaymentEntity[]> {
-    return await this.repository.findBy({id: In(ids), status: StatusEnum.New});
+    return await this.repository.find({
+      relations: ['shop'],
+      where: {id: In(ids), status: StatusEnum.New}
+    });
   }
 
   async findProceedByIds(ids: string[]): Promise<PaymentEntity[]> {
@@ -24,10 +27,17 @@ export class PaymentRepository implements IPaymentRepository {
     });
   }
 
-  async findDoneByShopId(shopId: string): Promise<PaymentEntity[]> {
+  async findProceedAndDoneByShopId(shopId: string): Promise<PaymentEntity[]> {
     return await this.repository.find({
       relations: ['paymentHistory'],
-      where: {shopId, status: StatusEnum.Done}
+      where: {shopId, status: In([StatusEnum.Proceed, StatusEnum.Done])}
+    });
+  }
+
+  async findProceedAndDone(): Promise<PaymentEntity[]> {
+    return await this.repository.find({
+      relations: ['paymentHistory'],
+      where: {status: In([StatusEnum.Proceed, StatusEnum.Done])}
     });
   }
 

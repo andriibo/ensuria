@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import {SettingsEntity} from 'domain/entities';
+import {DecimalColumnTransformer} from "infrastructure/transformers";
 
 @Entity('settings')
 export class SettingsModel implements SettingsEntity {
@@ -15,13 +16,13 @@ export class SettingsModel implements SettingsEntity {
   })
   id: string;
 
-  @Column({ type: 'decimal', precision: 6, scale: 2 })
+  @Column({ type: 'decimal', precision: 6, scale: 2, transformer: new DecimalColumnTransformer() })
   commissionA: number;
 
-  @Column({ type: 'decimal', precision: 4, scale: 2, comment: 'in percents' })
+  @Column({ type: 'decimal', precision: 4, scale: 2, comment: 'in percents', transformer: new DecimalColumnTransformer() })
   commissionB: number;
 
-  @Column({ type: 'decimal', precision: 4, scale: 2, comment: 'in percents' })
+  @Column({ type: 'decimal', precision: 4, scale: 2, comment: 'in percents', transformer: new DecimalColumnTransformer() })
   blockingD: number;
 
   @CreateDateColumn({

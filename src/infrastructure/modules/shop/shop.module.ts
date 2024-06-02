@@ -8,9 +8,10 @@ import {CreateShopHandler} from "application/modules/shop/handlers";
 import {ShopRepository} from "infrastructure/modules/shop/repositories";
 import {IShopService} from "application/modules/shop/services/shop.service";
 import {ShopService} from "infrastructure/modules/shop/services";
+import {ClientModule} from "infrastructure/modules/client/client.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([ShopModel])],
+    imports: [TypeOrmModule.forFeature([ShopModel]), ClientModule],
     exports: [IShopRepository],
     controllers: [ShopController],
     providers: [
