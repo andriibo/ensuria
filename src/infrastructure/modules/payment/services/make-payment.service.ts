@@ -17,7 +17,7 @@ export class MakePaymentService implements IMakePaymentService {
   async make(payment: PaymentEntity): Promise<number | undefined> {
     let model = payment;
     if (model.status === StatusEnum.Proceed) {
-      model = await this.paymentDoneService.done(payment);
+      model = await this.paymentDoneService.do(payment);
     }
 
     if (model.status === StatusEnum.Done) {
