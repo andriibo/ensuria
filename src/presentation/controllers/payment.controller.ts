@@ -50,7 +50,7 @@ export class PaymentController {
     @ApiNoContentResponse({ description: 'No content' })
     @ApiUnprocessableEntityResponse({ description: 'Unprocessable entity' })
     @ApiNotFoundResponse({ description: 'Not found' })
-    async done(@Body() request: PaymentsRequestView): Promise<void> {
+    async do(@Body() request: PaymentsRequestView): Promise<void> {
         const useCase =
             this.paymentUseCasesFactory.createPaymentsDoneUseCase();
 
@@ -62,7 +62,7 @@ export class PaymentController {
     @ApiOkResponse({ type: PaymentsPaidResponseView })
     @ApiUnprocessableEntityResponse({ description: 'Unprocessable entity' })
     @ApiNotFoundResponse({ description: 'Not found' })
-    async paid(@Param('shopId', ParseUUIDPipe) shopId: string): Promise<PaymentsPaidResponseDto> {
+    async pay(@Param('shopId', ParseUUIDPipe) shopId: string): Promise<PaymentsPaidResponseDto> {
         const useCase =
             this.paymentUseCasesFactory.createPaymentsPaidForShopUseCase();
 
