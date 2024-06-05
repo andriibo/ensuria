@@ -37,11 +37,7 @@ export class PaymentPaidService implements IPaymentPaidService {
       return;
     }
 
-    const shop = await this.shopRepository.findById(payment.shopId);
-    if (!shop) {
-      throw new NotFoundError('Shop not found.');
-    }
-
+    const shop = payment.shop;
     const status = StatusEnum.Paid;
     const paymentId = payment.id;
 

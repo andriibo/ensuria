@@ -29,7 +29,7 @@ export class PaymentRepository implements IPaymentRepository {
 
   async findProceedAndDoneByShopId(shopId: string): Promise<PaymentEntity[]> {
     return await this.repository.find({
-      relations: ['paymentHistory'],
+      relations: ['shop', 'paymentHistory'],
       where: {shopId, status: In([StatusEnum.Proceed, StatusEnum.Done])},
       order: {amount: 'ASC'}
     });
@@ -37,7 +37,7 @@ export class PaymentRepository implements IPaymentRepository {
 
   async findProceedAndDone(): Promise<PaymentEntity[]> {
     return await this.repository.find({
-      relations: ['paymentHistory'],
+      relations: ['shop', 'paymentHistory'],
       where: {status: In([StatusEnum.Proceed, StatusEnum.Done])}
     });
   }
