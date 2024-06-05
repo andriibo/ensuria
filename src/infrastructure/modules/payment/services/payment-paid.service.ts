@@ -7,14 +7,13 @@ import {DataSource} from "typeorm";
 import {PaymentHistoryModel, PaymentModel} from "infrastructure/modules/payment/models";
 import {NotFoundError} from "application/errors";
 import {ShopModel} from "infrastructure/modules/shop/models";
-import {IClientRepository, IShopRepository} from "domain/repositories";
+import {IClientRepository} from "domain/repositories";
 import {ClientModel} from "infrastructure/modules/client/models";
 
 @Injectable()
 export class PaymentPaidService implements IPaymentPaidService {
   constructor(
       @Inject(IClientRepository) private readonly clientRepository: IClientRepository,
-      @Inject(IShopRepository) private readonly shopRepository: IShopRepository,
       @InjectDataSource() private readonly dataSource: DataSource
   ) {}
 
