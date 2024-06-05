@@ -16,7 +16,7 @@ export class PaymentsDoneHandler
   async execute(command: PaymentsDoneCommand): Promise<void> {
     const { paymentIds } = command;
 
-    const payments = await this.paymentRepository.findProceedByIds(paymentIds);
+    const payments = await this.paymentRepository.findNotDoneByIds(paymentIds);
     if (!payments.length) {
       return;
     }

@@ -53,7 +53,7 @@ export class PaymentModel implements PaymentEntity {
 
   @ManyToOne(() => ShopModel, {
     onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    onDelete: 'RESTRICT',
   })
   @JoinColumn({ name: 'shop_id', referencedColumnName: 'id' })
   shop: ShopModel;

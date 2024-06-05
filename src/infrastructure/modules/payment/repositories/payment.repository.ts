@@ -20,17 +20,17 @@ export class PaymentRepository implements IPaymentRepository {
     });
   }
 
-  async findProceedByIds(ids: string[]): Promise<PaymentEntity[]> {
+  async findNotDoneByIds(ids: string[]): Promise<PaymentEntity[]> {
     return await this.repository.find({
       relations: ['paymentHistory'],
-      where: {id: In(ids), status: StatusEnum.Proceed}
+      where: {id: In(ids), status: In([StatusEnum.Proceed, StatusEnum.Paid])}
     });
   }
 
   async findProceedAndDoneByShopId(shopId: string): Promise<PaymentEntity[]> {
     return await this.repository.find({
       relations: ['paymentHistory'],
-      where: {shopId, status: In([StatusEnum.Proceed, StatusEnum.Done])}
+      where: {shopId, status: In([StatusEnum.Proceed, StatusEnum.Done])},
     });
   }
 

@@ -1,5 +1,5 @@
 export class AmountBlockedCalculator {
     calculateAmountBlocked(blockingD: number, amount: number): number {
-        return ~~(amount * blockingD / 100);
+        return Math.round(amount * blockingD / 100);
     }
 }

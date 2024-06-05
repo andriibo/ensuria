@@ -1,9 +1,9 @@
 export class CommissionCalculator {
     calculatePaymentCommission(commissionA: number, commissionB: number, amount: number): number {
-        return ~~(commissionA + (amount * commissionB / 100));
+        return Math.round(commissionA + (amount * commissionB / 100));
     }
 
     calculateMyCommission(commissionC: number, amount: number): number {
-        return ~~(amount * commissionC / 100);
+        return Math.round(amount * commissionC / 100);
     }
 }

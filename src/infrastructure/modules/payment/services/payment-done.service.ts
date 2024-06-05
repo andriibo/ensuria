@@ -17,6 +17,13 @@ export class PaymentDoneService implements IPaymentDoneService {
   ) {}
 
   async do(payment: PaymentEntity): Promise<void> {
+    if (payment.status === StatusEnum.Paid) {
+      const paymentDone = payment.paymentHistory.find(history => history.status === StatusEnum.Done);
+      if (paymentDone) {
+        return;
+      }
+    }
+
     const paymentProceed = payment.paymentHistory.find(history => history.status === StatusEnum.Proceed);
     if (!paymentProceed) {
       throw new NotFoundError('PaymentHistory not found.');
@@ -38,7 +45,9 @@ export class PaymentDoneService implements IPaymentDoneService {
         amountBlocked: 0,
         status
       });
-      await entityManager.update(PaymentModel, {id: paymentId}, {status});
+      if (payment.status !== StatusEnum.Paid) {
+        await entityManager.update(PaymentModel, {id: paymentId}, {status});
+      }
       const balance = client.balance + paymentProceed.amountBlocked;
       await entityManager.update(ClientModel, {id: client.id}, {balance});
     });
