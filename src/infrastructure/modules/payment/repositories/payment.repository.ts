@@ -20,7 +20,7 @@ export class PaymentRepository implements IPaymentRepository {
     });
   }
 
-  async findNotDoneByIds(ids: string[]): Promise<PaymentEntity[]> {
+  async findProceedAndPaidByIds(ids: string[]): Promise<PaymentEntity[]> {
     return await this.repository.find({
       relations: ['paymentHistory'],
       where: {id: In(ids), status: In([StatusEnum.Proceed, StatusEnum.Paid])}
