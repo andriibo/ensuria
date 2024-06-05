@@ -31,6 +31,7 @@ export class PaymentRepository implements IPaymentRepository {
     return await this.repository.find({
       relations: ['paymentHistory'],
       where: {shopId, status: In([StatusEnum.Proceed, StatusEnum.Done])},
+      order: {amount: 'ASC'}
     });
   }
 
